@@ -1,0 +1,19 @@
+{% extends "footBallApp/base.html" %}
+{% load static %}
+{% block body_block %}
+  <div class="container">
+    <div class="jumbotron">
+      {% if registered %}
+        <h4>Team member added successfully!</h4>
+      {% else %}
+        <h3>Add a team member</h3>
+        <form enctype="multipart/form-data" method="POST">
+          {% csrf_token %}
+          {{ team_member_form.as_p }}
+          <input type="submit" name="" value="Add">
+        </form>
+        
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

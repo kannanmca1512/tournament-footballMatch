@@ -1,0 +1,38 @@
+{% extends "footBallApp/base.html" %}
+{% load static %}
+{% block body_block %}
+  <div class="container">
+    <div class="jumbotron">
+      {% if registered %}
+        <h4>Match scheduling successfully</h4>
+      {% else %}
+        <h3>Create a match schedule</h3>
+        <form enctype="multipart/form-data" method="POST">
+          {% csrf_token %}
+          {{ scheduling_form.as_p }}
+          <input type="submit" name="" value="Add">
+        </form>
+        
+      {% endif %}
+      <center><h3>Match Schedulings</h3></center>
+      <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Team1</th>
+                <th>Team2</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Match Status</th> 
+                <th>Result</th>       
+            </tr>
+        </thead>
+        <tbody>
+      {% for match in matches_obj %}
+        <tr><td>{{ match.first_team }}</td><td>{{ match.second_team }}</td><td>{{ match.start_time }}</td>
+            <td>{{ match.end_time }}</td><td>{{ match.match_status }}</td><td>{{ match.result }}</td></tr>
+      {% endfor %}
+    </tbody>
+    </table>
+    </div>
+  </div>
+{% endblock %}

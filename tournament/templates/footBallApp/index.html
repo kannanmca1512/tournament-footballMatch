@@ -1,0 +1,92 @@
+{% extends "footBallApp/base.html" %}
+{% block body_block %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+</style>
+<div class="container">
+  <div class="jumbotron">
+    <h1>Welcome to the world of FootBall</h1>
+    {% if user.is_authenticated %}
+        <h3>Login user :  {{ user.username }}</h3>
+        <li><a href="{% url 'footBallApp:addTeam' %}">Add team</a></li>
+        <li><a href="{% url 'footBallApp:addTeamMember' %}">Add team member</a></li>
+        <li><a href="{% url 'footBallApp:matchScheduling' %}">Match Scheduling</a></li>
+        <!-- <form enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+            {{ user_form.as_p }}
+            {{ profile_form.as_p }}
+            <input type="submit" name="" value="Register">
+          </form> -->
+            <p>List of teams</p>
+            {% for obj in team %}
+            <button type="button" class="collapsible">{{ obj.team }}</button>
+            <div class="content">
+              {% if obj.members %}
+              <p>
+              <table class="table table-striped">
+                <thead>
+                        <tr>
+                            <th>Player</th>
+                            <th>Age</th>
+                            <th>Position</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for each in obj.members %}
+                        <tr>
+                            <td>{{each.name}}</td>
+                            <td>{{each.age}}</td>
+                            <td>{{each.position}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% empty %} 
+                <li>Sorry, no players in this team.</li> 
+                        {% endfor %}
+            </div></p>
+            {% endif %}
+            {% endfor %}
+    {% else %}
+        <h2>Register or Login if you'd like to</h2>
+    {% endif %}
+  </div>
+</div>
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+          content.style.display = "none";
+        } else {
+          content.style.display = "block";
+        }
+      });
+    }
+    </script>
+{% endblock %}
